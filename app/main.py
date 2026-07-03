@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
+from app.limiter import limiter
 from app.routers import auth, categories, products
 
 app = FastAPI(
@@ -10,6 +13,10 @@ app = FastAPI(
     version="1.0.0",
     docs_url=None,
 )
+
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
@@ -30,3 +37,7 @@ def custom_swagger_ui_html():
 @app.get("/")
 def root():
     return {"message": "Product Catalog API is running"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}

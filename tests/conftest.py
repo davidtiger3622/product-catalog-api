@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base, get_db, settings
+from app.limiter import limiter
 from app.main import app
 
 TEST_DATABASE_URL = settings.database_url.rsplit("/", 1)[0] + "/product_catalog_test"
@@ -42,3 +43,8 @@ def clean_db():
 @pytest.fixture()
 def client():
     return TestClient(app)
+
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    limiter.reset()
+    yield
