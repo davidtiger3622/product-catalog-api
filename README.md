@@ -41,6 +41,53 @@ Interactive documentation: **https://product-catalog-api-ktsu.onrender.com/docs*
 | Containerization | Docker, Docker Compose |
 | Deployment | Render (API), Neon (production database) |
 
+## Architecture
+
+```
+┌─────────────┐
+│   Client    │  (Browser, Insomnia, curl, etc.)
+└──────┬──────┘
+       │ HTTPS
+       ▼
+┌─────────────────────────────────────┐
+│              FastAPI                 │
+│  ┌─────────────────────────────┐    │
+│  │  Routers (auth/categories/    │    │
+│  │  products)                    │    │
+│  └──────────────┬────────────────┘    │
+│                 │                     │
+│  ┌──────────────▼────────────────┐    │
+│  │  JWT Auth Middleware           │    │
+│  │  (protects write operations)   │    │
+│  └──────────────┬────────────────┘    │
+│                 │                     │
+│  ┌──────────────▼────────────────┐    │
+│  │  Pydantic Schemas               │    │
+│  │  (request/response validation) │    │
+│  └──────────────┬────────────────┘    │
+│                 │                     │
+│  ┌──────────────▼────────────────┐    │
+│  │  CRUD layer                    │    │
+│  └──────────────┬────────────────┘    │
+└─────────────────┼─────────────────────┘
+                   │ SQLAlchemy ORM
+                   ▼
+         ┌───────────────────┐
+         │    PostgreSQL      │
+         │  (Neon in prod,    │
+         │   Docker locally)  │
+         └───────────────────┘
+```
+
+**Request flow example — creating a product:**
+1. Client sends `POST /products/` with a JWT in the `Authorization` header and a JSON body.
+2. FastAPI routes the request to the products router.
+3. The JWT is validated via a dependency (`get_current_user`); unauthenticated requests are rejected before reaching business logic.
+4. The request body is validated against the `ProductCreate` Pydantic schema.
+5. The router checks that the referenced `category_id` exists, then delegates to the CRUD layer.
+6. SQLAlchemy issues the `INSERT` against PostgreSQL and returns the created row.
+7. The response is serialized through the `ProductOut` schema and returned as JSON.
+
 ## Screenshots
 
 ### Interactive API Documentation (Swagger UI)
