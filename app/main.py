@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.staticfiles import StaticFiles
+
 from app.routers import auth, categories, products
 
 app = FastAPI(
