@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -36,7 +37,8 @@ def custom_swagger_ui_html():
 
 @app.get("/")
 def root():
-    return {"message": "Product Catalog API is running"}
+    return RedirectResponse(url="/docs")
+
 
 @app.get("/health")
 def health_check():
