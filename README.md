@@ -17,6 +17,14 @@ A production-style REST API for managing a product catalog, built to demonstrate
 - CI pipeline: lint, test, and Docker build on every push
 - Fully containerized with Docker Compose
 
+## Live Demo
+
+The API is deployed and live at: **https://product-catalog-api-ktsu.onrender.com**
+
+Interactive documentation: **https://product-catalog-api-ktsu.onrender.com/docs**
+
+> Note: hosted on Render's free tier, which spins down after periods of inactivity. The first request after idle may take 30–60 seconds to respond while the service wakes up.
+
 ## Tech Stack
 
 | Layer | Technology |
