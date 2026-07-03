@@ -1,11 +1,11 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
-from typing import Optional
 from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class CategoryBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class CategoryCreate(CategoryBase):
@@ -19,7 +19,7 @@ class CategoryOut(CategoryBase):
 
 class ProductBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str | None = None
     price: float
     stock_quantity: int
     category_id: int
@@ -30,11 +30,11 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[float] = None
-    stock_quantity: Optional[int] = None
-    category_id: Optional[int] = None
+    name: str | None = None
+    description: str | None = None
+    price: float | None = None
+    stock_quantity: int | None = None
+    category_id: int | None = None
 
 
 class ProductOut(ProductBase):

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+
+from app import auth, crud, models, schemas
 from app.database import get_db
-from app import schemas, crud, models, auth
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -32,7 +33,11 @@ def create_product(
 ):
     category = crud.get_category(db, product.category_id)
     if category is None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Category does not exist")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Category does not exist",
+            headers={"WWW-Authenticate": "Bearer"},
+)
     return crud.create_product(db, product)
 
 
@@ -46,7 +51,11 @@ def update_product(
     if product.category_id is not None:
         category = crud.get_category(db, product.category_id)
         if category is None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Category does not exist")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Category does not exist",
+                headers={"WWW-Authenticate": "Bearer"},
+)
     updated = crud.update_product(db, product_id, product)
     if updated is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")

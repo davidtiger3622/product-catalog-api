@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from app.routers import auth, categories, products
 
 app = FastAPI(
