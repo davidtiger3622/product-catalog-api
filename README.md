@@ -33,6 +33,24 @@ A production-style REST API for managing a product catalog, built to demonstrate
 | Containerization | Docker, Docker Compose |
 | Deployment | Render (API), Neon (production database) |
 
+## Screenshots
+
+### Interactive API Documentation (Swagger UI)
+![Swagger UI Overview](docs/screenshots/swagger-overview.png)
+
+### Example Request Schema
+![Request Example](docs/screenshots/swagger-request-example.png)
+
+### Authenticated Request in Action
+![Successful Request](docs/screenshots/successful-request.png)
+
+### Continuous Integration
+![CI Passing](docs/screenshots/ci-passing.png)
+
+### Test Suite
+![Tests Passing](docs/screenshots/tests-passing.png)
+
+
 ## Getting Started
 
 ### Prerequisites
