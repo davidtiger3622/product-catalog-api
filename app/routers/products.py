@@ -7,15 +7,22 @@ from app.database import get_db
 router = APIRouter(prefix="/products", tags=["products"])
 
 
-@router.get("/", response_model=list[schemas.ProductOut])
+@router.get("/", response_model=schemas.PaginatedProducts)
 def list_products(
     skip: int = 0,
     limit: int = 100,
     category_id: int | None = None,
     db: Session = Depends(get_db),
 ):
-    return crud.get_products(db, skip=skip, limit=limit, category_id=category_id)
-
+    items = crud.get_products(db, skip=skip, limit=limit, category_id=category_id)
+    total = crud.count_products(db, category_id=category_id)
+    return schemas.PaginatedProducts(
+        total=total,
+        skip=skip,
+        limit=limit,
+        has_more=(skip + limit) < total,
+        items=items,
+    )
 
 @router.get("/{product_id}", response_model=schemas.ProductOut)
 def get_product(product_id: int, db: Session = Depends(get_db)):

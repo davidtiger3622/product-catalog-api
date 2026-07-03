@@ -131,5 +131,6 @@ def test_filter_products_by_category(client):
     response = client.get(f"/products/?category_id={electronics_id}")
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 1
-    assert data[0]["name"] == "Monitor"
+    assert data["total"] == 1
+    assert len(data["items"]) == 1
+    assert data["items"][0]["name"] == "Monitor"

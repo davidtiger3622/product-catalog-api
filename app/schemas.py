@@ -42,6 +42,12 @@ class ProductOut(ProductBase):
     id: int
     created_at: datetime
 
+class PaginatedProducts(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    has_more: bool
+    items: list[ProductOut]
 
 class UserCreate(BaseModel):
     email: EmailStr

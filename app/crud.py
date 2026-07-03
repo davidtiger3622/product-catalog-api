@@ -33,6 +33,18 @@ def get_products(db: Session, skip: int = 0, limit: int = 100, category_id: int 
         query = query.filter(models.Product.category_id == category_id)
     return query.offset(skip).limit(limit).all()
 
+def get_products(db: Session, skip: int = 0, limit: int = 100, category_id: int | None = None):
+    query = db.query(models.Product)
+    if category_id is not None:
+        query = query.filter(models.Product.category_id == category_id)
+    return query.offset(skip).limit(limit).all()
+
+
+def count_products(db: Session, category_id: int | None = None):
+    query = db.query(models.Product)
+    if category_id is not None:
+        query = query.filter(models.Product.category_id == category_id)
+    return query.count()
 
 def get_product(db: Session, product_id: int):
     return db.query(models.Product).filter(models.Product.id == product_id).first()
