@@ -7,3 +7,7 @@ env/
 *.egg-info/
 .DS_Store
 postgres_data/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+
